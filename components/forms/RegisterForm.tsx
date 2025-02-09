@@ -10,19 +10,15 @@ import {
 import { CustomFormfield } from "@/components/ui/CustomFormField"
 import SubmitButton from "../SubmitButton"
 import { useState } from "react"
-import { PatientFormValidation, UserFormValidation } from "@/lib/validation"
+import { PatientFormValidation } from "@/lib/validation"
 import { useRouter } from "next/navigation"; z
-import { createUser, registerPatient } from "@/lib/actions/patient.actions"
+import { registerPatient } from "@/lib/actions/patient.actions"
 import { FormFieldType } from "./PatientForm";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Doctors, GenderOptions, IdentificationTypes, PatientFormDefaultValues } from "@/constants";
 import Image from "next/image";
 import { SelectItem } from "../ui/select";
 import FileUploader from "../FileUploader";
-
-// using enum
-
-
 
 const RegisterForm = ({ user }: { user: User }) => {
     const [isLoading, setIsLoading] = useState(false);
@@ -79,11 +75,13 @@ const RegisterForm = ({ user }: { user: User }) => {
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 
+                {/* title section */}
                 <section className="mb-4">
                     <h1 className="header">Hi there 👋</h1>
                     <p className="text-dark-700">schedule your first appointment</p>
                 </section>
 
+                {/* name  */}
                 <CustomFormfield
                     control={form.control}
                     fieldType={FormFieldType.INPUT}
@@ -117,6 +115,7 @@ const RegisterForm = ({ user }: { user: User }) => {
                     />
                 </div>
 
+                {/* birthDate and gender*/}
                 <div className="flex flex-col gap-6 md:flex-row">
                     <CustomFormfield
                         control={form.control}
@@ -150,6 +149,7 @@ const RegisterForm = ({ user }: { user: User }) => {
                     />
                 </div>
 
+                {/* address and occupation */}
                 <div className="flex flex-col gap-6 md:flex-row">
                     <CustomFormfield
                         control={form.control}
@@ -168,6 +168,7 @@ const RegisterForm = ({ user }: { user: User }) => {
                     />
                 </div>
 
+                {/* Emergency name and emergency number */}
                 <div className="flex flex-col gap-6 md:flex-row">
                     <CustomFormfield
                         control={form.control}
@@ -187,7 +188,7 @@ const RegisterForm = ({ user }: { user: User }) => {
                 </div>
 
 
-                {/* Section of form for medical reportक */}
+                {/* Section of form for medical report */}
                 <section className="mb-4">
                     <h2 className="sub-header">Medical Information</h2>
                 </section>

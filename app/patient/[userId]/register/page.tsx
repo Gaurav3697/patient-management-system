@@ -6,7 +6,6 @@ import { getUser } from '@/lib/actions/patient.actions';
 
 const Register = async ({ params: { userId } }: SearchParamProps) => {
   const user = await getUser(userId);
-  console.log("user", user);
 
   return (
     <div className="h-screen max-h-screen">

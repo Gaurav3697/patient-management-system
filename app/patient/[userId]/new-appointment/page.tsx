@@ -1,22 +1,24 @@
-import PatientForm from "@/components/forms/PatientForm";
-import { ModeToggle } from "@/components/theme-switcher"
+import AppointmentForm from "@/components/forms/AppointmentForm";
+import { getPatient } from "@/lib/actions/patient.actions";
+// import { ModeToggle } from "@/components/theme-switcher"
 import Image from "next/image";
 
 
-export default function Home() {
+const NewAppointment = async ({ params: { userId } }: SearchParamProps) => {
+  const patient = await getPatient(userId);
+  console.log(patient)
   return (
     <div className="h-screen max-h-screen">
 
-      {/* //toogle theme */}
+      {/* //toogle theme
         <div className="ml-2 mt-2 absolute">
           <ModeToggle />
-      </div>
+      </div> */}
 
-      {/*OTP verification */}
 
-      <div className="flex">
+      <div className="flex h-screen max-h-screen">
       <section className="remove-scrollbar container my-auto ">
-        <div className="sub-container max-w-[496px]">
+        <div className="sub-container max-w-[860px] flex-1 justify-between">
           <Image 
             src="/assets/icons/logo-full.svg"
             height={1000}
@@ -24,21 +26,27 @@ export default function Home() {
             alt="patient"
             className="mb-12 h-10 w-fit"
           /> 
-          <PatientForm/>
+          {
+            patient ? (<AppointmentForm
+              type="create"
+              userId={userId}
+              patientId={patient.$id}/>):("loading")
+          }
         </div>
       </section>
 
       {/* IMAGE SECTION */}
       <Image 
-        src={"/assets/images/onboarding-img.png"}
+        src={"/assets/images/appointment-img.png"}
         height={1000}
         width={1000}
-        alt="patient"
-        className="max-w-[50%] hidden h-screen object-cover md:block rounded-xl"
+        alt="appointment"
+        className="mside-img max-w-[390px] bg-buttom"
       />
       </div>
-
 
     </div>
   );
 }
+
+export default NewAppointment;
