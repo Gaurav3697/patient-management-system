@@ -7,7 +7,6 @@ import Link from "next/link"
 
 const Admin = async() => {
     const appointments = await getRecentAppointmentList()
-    console.log(appointments)
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">

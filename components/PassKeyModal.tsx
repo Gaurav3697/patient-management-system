@@ -40,14 +40,13 @@ const PassKeyModal = () => {
                 setOpen(false);
                 router.push("/admin");
             } else {
-                setOpen(true);
+                setOpen(open);
             }
     }, [encryptedKey]);
 
 
     const validatePassKey = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-        console.log('submitted')
         if (passKey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
             const encryptedKey = encryptKey(passKey);
             localStorage.setItem('accessKey', encryptedKey);

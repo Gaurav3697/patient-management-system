@@ -8,19 +8,21 @@ import {
 } from "@/components/ui/form"
 import { CustomFormfield } from "@/components/ui/CustomFormField"
 import SubmitButton from "../SubmitButton"
-import { useState } from "react"
-import { getAppointmentSchema } from "@/lib/validation"
+import { Dispatch, SetStateAction, useState } from "react"; import { getAppointmentSchema } from "@/lib/validation"
 import { useRouter } from "next/navigation";
 import { FormFieldType } from "./PatientForm";
 import { Doctors } from "@/constants";
 import { SelectItem } from "../ui/select";
 import Image from "next/image";
-import { createAppointment } from "@/lib/actions/appointmentAction.actions";
+import { createAppointment, updateAppointment } from "@/lib/actions/appointmentAction.actions";
+import { Appointment } from "@/types/appwrite.types";
 
-const AppointmentForm = ({ userId, patientId, type }: {
+const AppointmentForm = ({ userId, patientId, type, appointment, setOpen }: {
   userId: string,
   patientId: string,
   type: "create" | "cancel" | "schedule"
+  appointment?: Appointment;
+  setOpen?: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -31,17 +33,17 @@ const AppointmentForm = ({ userId, patientId, type }: {
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
     resolver: zodResolver(AppointmentFormValidation),
     defaultValues: {
-      schedule: new Date(),
-      reason: "",
-      note: "",
-      cancellationReason: "",
-      primaryPhysician:"",
+      schedule: appointment?new Date(appointment.schedule):new Date(),
+      reason: appointment?appointment.reason:"",
+      note: appointment?appointment.note:"",
+      cancellationReason: appointment?.cancellationReason || "",
+      primaryPhysician: appointment?appointment.primaryPhysician:"",
     },
   })
 
   // 2. Define a submit handler.
   const onSubmit = async (values: z.infer<typeof AppointmentFormValidation>) => {
-
+    console.log("I am submitting,",type)
     setIsLoading(true);
     let status;
     switch (type) {
@@ -59,25 +61,44 @@ const AppointmentForm = ({ userId, patientId, type }: {
     }
 
     try {
+
       if (type === 'create' && patientId) {
         const appointmentData = {
           userId,
-          patient:patientId,
+          patient: patientId,
           primaryPhysician: values.primaryPhysician,
           schedule: new Date(values.schedule),
-          reason:values.reason!,
+          reason: values.reason!,
           note: values.reason,
           status: status as Status,
         }
         const appointment = await createAppointment(appointmentData);
 
-        if(appointment){
+        if (appointment) {
           form.reset();
           router.push(`/patient/${userId}/new-appointment/success?appointmentId=${appointment.$id}`)
+        } 
+      }else {
+        const appointmentToUpdate = {
+          userId,
+          appointmentId: appointment?.$id!,
+          appointment: {
+            primaryPhysician: values.primaryPhysician,
+            schedule: new Date(values.schedule),
+            status: status as Status,
+            cancellationReason: values.cancellationReason,
+          },
+          type,
+        };
+
+        const updatedAppointment = await updateAppointment(appointmentToUpdate);
+
+        if (updatedAppointment) {
+          setOpen && setOpen(false);
+          form.reset();
         }
+
       }
-
-
     } catch (error) {
       console.log(error);
     } finally {
@@ -108,10 +129,10 @@ const AppointmentForm = ({ userId, patientId, type }: {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 
-        <section className="mb-4">
+        {type == "create" && <section className="mb-4">
           <h1 className="header">New Appointment</h1>
           <p className="text-dark-700">Request a new appointment in 10 second</p>
-        </section>
+        </section>}
 
         {type !== "cancel" && (
           <>
@@ -179,7 +200,6 @@ const AppointmentForm = ({ userId, patientId, type }: {
             />
           )
         }
-
 
         <SubmitButton isLoading={isLoading} className={`${type === 'cancel' ? 'shad-danger-btn' : 'shad-primary-btn'} w-full`} >Get Started</SubmitButton>
 
