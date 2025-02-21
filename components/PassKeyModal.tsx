@@ -24,23 +24,22 @@ import { decryptKey, encryptKey } from '@/lib/utils';
 
 const PassKeyModal = () => {
     const router = useRouter();
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
     const [passKey, setPassKey] = useState('');
     const [error, setError] = useState('');
     const path = usePathname();
 
     // window object is a global object in web browsers that represents the browser window
-    const encryptedKey =typeof window !== "undefined"? window.localStorage.getItem("accessKey"): null;
+    const encryptedKey = typeof window !== "undefined"? window.localStorage.getItem("accessKey"): null;
 
     useEffect(() => {
-        console.log(encryptedKey)
         const accessKey = encryptedKey && decryptKey(encryptedKey);
         if (path)
             if (accessKey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY!.toString()) {
                 setOpen(false);
                 router.push("/admin");
             } else {
-                setOpen(open);
+                setOpen(true);
             }
     }, [encryptedKey]);
 
