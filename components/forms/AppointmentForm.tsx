@@ -68,7 +68,7 @@ const AppointmentForm = ({ userId, patientId, type, appointment, setOpen }: {
           patient: patientId,
           primaryPhysician: values.primaryPhysician,
           schedule: new Date(values.schedule),
-          reason: values.reason!,
+          reason: values.reason || " ",
           note: values.reason,
           status: status as Status,
         }
@@ -81,7 +81,7 @@ const AppointmentForm = ({ userId, patientId, type, appointment, setOpen }: {
       }else {
         const appointmentToUpdate = {
           userId,
-          appointmentId: appointment?.$id!,
+          appointmentId: appointment?.$id || "",
           appointment: {
             primaryPhysician: values.primaryPhysician,
             schedule: new Date(values.schedule),
@@ -94,7 +94,9 @@ const AppointmentForm = ({ userId, patientId, type, appointment, setOpen }: {
         const updatedAppointment = await updateAppointment(appointmentToUpdate);
 
         if (updatedAppointment) {
-          setOpen && setOpen(false);
+          if (setOpen) {
+            setOpen(false);
+          }
           form.reset();
         }
 
@@ -106,23 +108,23 @@ const AppointmentForm = ({ userId, patientId, type, appointment, setOpen }: {
     }
   }
 
-  let buttonLabel;
-  switch (type) {
-    case "cancel":
-      buttonLabel = 'cancel Appointment';
-      break;
+  // let buttonLabel;
+  // switch (type) {
+  //   case "cancel":
+  //     buttonLabel = 'cancel Appointment';
+  //     break;
 
-    case "create":
-      buttonLabel = 'Create Appointment';
-      break;
+  //   case "create":
+  //     buttonLabel = 'Create Appointment';
+  //     break;
 
-    case 'schedule':
-      buttonLabel = 'Schedule Appointment';
-      break;
+  //   case 'schedule':
+  //     buttonLabel = 'Schedule Appointment';
+  //     break;
 
-    default:
-      break;
-  }
+  //   default:
+  //     break;
+  // }
 
 
   return (

@@ -21,6 +21,7 @@ import {
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { decryptKey, encryptKey } from '@/lib/utils';
+import { Button } from './ui/button';
 
 const PassKeyModal = () => {
     const router = useRouter();
@@ -41,7 +42,7 @@ const PassKeyModal = () => {
             } else {
                 setOpen(true);
             }
-    }, [encryptedKey]);
+    }, [encryptedKey,path,router]);
 
 
     const validatePassKey = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -62,6 +63,7 @@ const PassKeyModal = () => {
 
     return (
         <div>
+            <Button onClick={()=>setOpen(!open)} />
             <AlertDialog open={open} onOpenChange={setOpen}>
                 <AlertDialogContent className='shad-alert-dialog'>
                     <AlertDialogHeader>

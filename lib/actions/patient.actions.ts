@@ -1,12 +1,16 @@
 "use server"
 import { ID, Query } from "node-appwrite"
 import {
-  BUCKET_ID, DATABASE_ID, databases, ENDPOINT, PATIENT_COLLECTION_ID, PROJECT_ID, storage, users,
+  BUCKET_ID, DATABASE_ID, databases, PATIENT_COLLECTION_ID, storage, users,
   // API_KEY,
   // APPOINTMENT_COLLECTION_ID,
 } from "../appwrite.config"
 import { InputFile } from "node-appwrite/file"
 import { parseStringify } from "../utils";
+
+interface CustomError extends Error {
+  code?: number;
+}
 
 export const createUser = async (user: CreateUserParams) => {
   try {
@@ -20,9 +24,10 @@ export const createUser = async (user: CreateUserParams) => {
     );
 
     return JSON.parse(JSON.stringify(newuser));
-  } catch (error: any) {
+  } catch (error) {
+    const typedError = error as CustomError;
     // Check existing user
-    if (error && error?.code === 409) {
+    if (typedError && typedError?.code === 409) {
       const existingUser = await users.list([
         Query.equal("email", [user.email]),
       ]);
@@ -45,7 +50,6 @@ export const getUser = async (userId: string) => {
 
 export const getPatient = async (userId: string) => {
   try {
-    console.log(userId)
     const patients = await databases.listDocuments(
       DATABASE_ID!, //database_id
       PATIENT_COLLECTION_ID!, //PATIENT_COLLECTION_ID
