@@ -6,7 +6,6 @@ import Image from "next/image";
 
 const NewAppointment = async ({ params: { userId } }: SearchParamProps) => {
   const patient = await getPatient(userId);
-  console.log(patient)
   return (
     <div className="h-screen max-h-screen">
 

@@ -10,8 +10,8 @@ import { revalidatePath } from "next/cache";
 export const createAppointment = async (appointment: CreateAppointmentParams) => {
     try {
         const newPatient = await databases.createDocument(
-            '67933a39003596f66595',  // DATABASE_ID!,
-            '67937fc90011349701dc', //APPOINTMENT_COLLECTION_ID!,
+            DATABASE_ID!,  // DATABASE_ID!,
+            APPOINTMENT_COLLECTION_ID!, //APPOINTMENT_COLLECTION_ID!,
             ID.unique(),
             appointment
         );
@@ -26,8 +26,8 @@ export const createAppointment = async (appointment: CreateAppointmentParams) =>
 export const getApointment = async (appointmentId: string) => {
     try {
         const appointment = await databases.getDocument(
-            "67933a39003596f66595", //DATABASE_ID
-            "67937fc90011349701dc", //APPOINTMENT_COLLECTION_ID
+            DATABASE_ID!, //DATABASE_ID
+            APPOINTMENT_COLLECTION_ID!, //APPOINTMENT_COLLECTION_ID
             appointmentId,
         )
         return parseStringify(appointment);
@@ -79,7 +79,7 @@ export const getRecentAppointmentList = async () => {
     }
 }
 
-export const updateAppointment = async({appointmentId, userId, appointment, type}:updateAppointmentParams) =>{
+export const updateAppointment = async({appointmentId, userId, appointment, type}:UpdateAppointmentParams) =>{
     try {
         const updatedAppointment = await databases.updateDocument(
             DATABASE_ID!,
