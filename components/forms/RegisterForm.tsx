@@ -56,8 +56,8 @@ const RegisterForm = ({ user }: { user: User }) => {
                 identificationDocument: formData,
             }
 
-            //@ts-expect-error
-            const patient = await registerPatient(patientData);
+// @ts-expect-error: Necessary due to type mismatch in registerPatient
+const patient = await registerPatient(patientData);
             if (patient) {
                 router.push(`/patient/${user.$id}/new-appointment`);
             }

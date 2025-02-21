@@ -1,8 +1,6 @@
-import React, { Key } from 'react'
+import React from 'react'
 import {
-    Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -162,7 +160,7 @@ const Renderfield = ({ field, props }: { field: any; props: CustomProps }) => {
 }
 
 const CustomFormfield = (props: CustomProps) => {
-    const { control, fieldType, name, label, placeholder } = props;
+    const { control, fieldType, name, label } = props;
     return (
         <div>
             <FormField
