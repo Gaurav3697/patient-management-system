@@ -6,10 +6,19 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
+interface SearchParamProps {
+    params: Promise<{ userId: string }>;
+    searchParams?: { appointmentId?: string };
+}
 
-const Success = async ({ params: { userId }, searchParams }: SearchParamProps) => {
-    const appointmentId = (searchParams?.appointmentId as string) || ''
-    const appointment = await getApointment(appointmentId)
+// const Success = async ({ params: { userId }, searchParams }: SearchParamProps) => {
+//     const appointmentId = (searchParams?.appointmentId as string) || ''
+//     const appointment = await getApointment(appointmentId)
+
+const Success = async ({ params, searchParams }: SearchParamProps) => {
+    const resolvedParams = await params; // Await the promise to get the actual params object
+    const appointmentId = searchParams?.appointmentId ?? '';
+    const appointment = await getApointment(appointmentId);
 
     const doctor = Doctors.find((doc) => doc.name === appointment.primaryPhysician)
 
@@ -66,8 +75,8 @@ const Success = async ({ params: { userId }, searchParams }: SearchParamProps) =
                 </section>
 
                 <Button variant='outline' className='shad-primary-btn' asChild>
-                    <Link href={`/patient/${userId}/new-appointment`}>
-                      New Appointment
+                    <Link href={`/patient/${resolvedParams.userId}/new-appointment`}>
+                        New Appointment
                     </Link>
                 </Button>
 
