@@ -3,9 +3,17 @@ import { getPatient } from "@/lib/actions/patient.actions";
 // import { ModeToggle } from "@/components/theme-switcher"
 import Image from "next/image";
 
+interface SearchParamProps {
+  params: Promise<{ userId: string }>;
+}
 
-const NewAppointment = async ({ params: { userId } }: SearchParamProps) => {
-  const patient = await getPatient(userId);
+const NewAppointment = async ({ params }: SearchParamProps) => {
+  const resolvedParams = await params; // Await the promise to get the actual params object
+  const patient = await getPatient(resolvedParams.userId);
+
+// const NewAppointment = async ({ params: { userId } }: SearchParamProps) => {
+//   const patient = await getPatient(userId);
+
   return (
     <div className="h-screen max-h-screen">
 
@@ -28,7 +36,7 @@ const NewAppointment = async ({ params: { userId } }: SearchParamProps) => {
           {
             patient ? (<AppointmentForm
               type="create"
-              userId={userId}
+              userId={resolvedParams.userId}
               patientId={patient.$id}/>):("loading")
           }
         </div>

@@ -4,8 +4,14 @@ import React from 'react';
 import RegisterForm from '@/components/forms/RegisterForm';
 import { getUser } from '@/lib/actions/patient.actions';
 
-const Register = async ({ params: { userId } }: SearchParamProps) => {
-  const user = await getUser(userId);
+interface SearchParamProps {
+  params: Promise<{ userId: string }>;
+}
+
+const Register = async ({ params }: SearchParamProps) => {
+  // const user = await getUser(userId);
+    const resolvedParams = await params; // Await the promise to get the actual params object
+    const user = await getUser(resolvedParams.userId);
 
   return (
     <div className="h-screen max-h-screen">

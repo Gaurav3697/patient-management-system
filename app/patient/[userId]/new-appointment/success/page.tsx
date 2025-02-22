@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
+
 const Success = async ({ params: { userId }, searchParams }: SearchParamProps) => {
     const appointmentId = (searchParams?.appointmentId as string) || ''
     const appointment = await getApointment(appointmentId)
