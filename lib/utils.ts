@@ -5,8 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value)); //before
-// export const parseStringify = (value: string) => JSON.parse(JSON.stringify(value)); //after
 
 export const convertFileToUrl = (file: File) => URL.createObjectURL(file);
 

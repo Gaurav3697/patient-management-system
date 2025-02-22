@@ -1,3 +1,5 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 import React from 'react'
 import {
     FormControl,
@@ -20,6 +22,7 @@ import { Textarea } from './textarea';
 import { Checkbox } from './checkbox';
 
 interface CustomProps {
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     control: Control<any>,
     fieldType: FormFieldType,
     name: string,
@@ -31,9 +34,11 @@ interface CustomProps {
     dateFormat?: string,
     showTimeSelect?: boolean,
     children?: React.ReactNode,
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     renderSkeleton?: (field: any) => React.ReactNode,
 }
 
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 const Renderfield = ({ field, props }: { field: any; props: CustomProps }) => {
     const { fieldType, iconSrc, iconAlt, placeholder, showTimeSelect, dateFormat, renderSkeleton } = props;
 
